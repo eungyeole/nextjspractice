@@ -12,6 +12,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.21.0",
     "dom": "^0.0.3",
     "next": "^10.0.3",
     "react": "^17.0.1"
