@@ -1,0 +1,19 @@
+{
+  "name": "nextjspractice",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "next",
+    "build": "next build",
+    "start": "next start"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dom": "^0.0.3",
+    "next": "^10.0.3",
+    "react": "^17.0.1"
+  }
+}
