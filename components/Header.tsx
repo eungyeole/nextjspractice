@@ -1,6 +1,7 @@
 import Link from 'next/link';
+import { CSSProperties } from 'react';
 
-const linkStyle = {
+const linkStyle : CSSProperties = {
   marginRight: 15
 };
 

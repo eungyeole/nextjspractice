@@ -1,4 +1,4 @@
-function GlobalStyle() {
+function GlobalStyle(): JSX.Element {
     return(
         <style jsx global>{`
             body{

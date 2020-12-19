@@ -1,16 +1,29 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
+import axios, { AxiosPromise, AxiosResponse } from "axios";
+import { EffectCallback, useEffect, useState } from "react";
+interface data{
+    email : string,
+    gcn : string,
+    name : string
+}
+interface response {
+    data : data
+}
+const post = async () : Promise<data>=>{
+    const data : response =await axios.get("http://10.156.147.146:8090/v1/info/basic",{
+        headers: {
+            "access-token" : "Bearer " + window.localStorage.getItem("access_token")
+        }
+    });
+    return(data.data);
+}
 
 function Index(){
-    const [data,setData] = useState("");
-    useEffect(async ()=>{
-        const data=await axios.get("http://10.156.147.146:8090/v1/info/basic",{
-            headers: {
-                "access-token" : "Bearer " + window.localStorage.getItem("access_token")
-            }
+    const [data,setData] = useState<data>();
+    useEffect(()=>{
+        post()
+        .then((res: data)=>{
+            setData(res);
         })
-        setData(data.data);
-        console.log(data);
     },[])
     return(
         <>

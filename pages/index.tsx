@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import Header from "../components/Header"
-import axios from "axios"
-import { Component, useEffect, useState } from 'react'
+import axios, { AxiosAdapter, AxiosResponse } from "axios"
+import { Component, CSSProperties, useEffect, useState } from 'react'
 import Router from 'next/router'
 import GlobalStyle from '../components/GlobalStyle'
 /*class Index extends Component {
@@ -70,19 +70,19 @@ import GlobalStyle from '../components/GlobalStyle'
     }
 }*/
 function Index(){
-    const [id,setId] = useState("");
-    const [pw,setPw] = useState("");
-    const loginBox={
+    const [id,setId] = useState<string>("");
+    const [pw,setPw] = useState<string>("");
+    const loginBox:CSSProperties={
         margin: "0 auto" ,
         width: "300px",
         height: "80px",
         justifyContent: "space-between",
-        display: 'flex', 
-        flexDirection: 'column'
+        display: "flex", 
+        flexDirection: "column"
     }
     async function post(){
-        const url="http://10.156.147.146:8080"
-        const location = await axios.post(
+        const url:string ="http://10.156.147.146:8080"
+        const location:AxiosResponse = await axios.post(
             url + "/dsmauth/login",
             {
                 id: id, 
@@ -91,7 +91,7 @@ function Index(){
                 client_id: "1234"
             }
         )
-        const token = await axios.post(
+        const token:AxiosResponse = await axios.post(
             url + "/dsmauth/token",
             {
                 client_id: "1234",
@@ -104,13 +104,10 @@ function Index(){
         window.localStorage.setItem("refresh_token", token.data["refresh-token"]);
         Router.push("/main");
     }
-    function submit(e){
+    function submit(e: React.FormEvent){
         e.preventDefault();
         post();
     }
-    useEffect(()=>{
-        console.log(a);
-    })
     return(
         <form onSubmit={submit} style={loginBox}>
             <input value={id} onChange={(e)=>setId(e.target.value)} type="text"></input>
