@@ -1,9 +1,10 @@
 import Link from 'next/link'
 import Header from "../components/Header"
 import axios from "axios"
-import { Component, useEffect } from 'react'
+import { Component, useEffect, useState } from 'react'
 import Router from 'next/router'
-class Index extends Component {
+import GlobalStyle from '../components/GlobalStyle'
+/*class Index extends Component {
     state = {
         id : '',
         pw : '',
@@ -35,7 +36,7 @@ class Index extends Component {
             {
                 client_id: "1234",
                 client_secret: "1234",
-                code : location.data.location
+                code : (location.data.location).split("code=")[1]
             }
         )
 
@@ -57,18 +58,20 @@ class Index extends Component {
             flexDirection: 'column'
         }
         return(
-            <form onSubmit={this.submit} style={loginBox}>
-                <input value={this.state.id} onChange={this.handleId} type="text"></input>
-                <input value={this.state.pw} onChange={this.handlePw} type="password"></input>
-                <button>로그인</button>
-            </form>
+            <>
+                <GlobalStyle></GlobalStyle>
+                <form onSubmit={this.submit} style={loginBox}>
+                    <input value={this.state.id} onChange={this.handleId} type="text"></input>
+                    <input value={this.state.pw} onChange={this.handlePw} type="password"></input>
+                    <button>로그인</button>
+                </form>
+            </>
         )
     }
-}
-/*function Index(){
-    let a="";
-    let b="";
-    let result;
+}*/
+function Index(){
+    const [id,setId] = useState("");
+    const [pw,setPw] = useState("");
     const loginBox={
         margin: "0 auto" ,
         width: "300px",
@@ -78,26 +81,42 @@ class Index extends Component {
         flexDirection: 'column'
     }
     async function post(){
-        result = await axios.post(
-            "http://10.156.147.146:8080/dsmauth/login",
+        const url="http://10.156.147.146:8080"
+        const location = await axios.post(
+            url + "/dsmauth/login",
             {
                 id: id, 
                 password: pw, 
                 redirect_url: "localhost:3000", 
-                client: "1234"
+                client_id: "1234"
             }
         )
+        const token = await axios.post(
+            url + "/dsmauth/token",
+            {
+                client_id: "1234",
+                client_secret: "1234",
+                code : (location.data.location).split("code=")[1]
+            }
+        )
+
+        window.localStorage.setItem("access_token", token.data["access-token"]);
+        window.localStorage.setItem("refresh_token", token.data["refresh-token"]);
+        Router.push("/main");
     }
     function submit(e){
         e.preventDefault();
         post();
     }
+    useEffect(()=>{
+        console.log(a);
+    })
     return(
         <form onSubmit={submit} style={loginBox}>
-            <input value={a} onChange={(e)=>a=e.target.value} type="text"></input>
-            <input value={b} onChange={(e)=>b=e.target.value} type="password"></input>
+            <input value={id} onChange={(e)=>setId(e.target.value)} type="text"></input>
+            <input value={pw} onChange={(e)=>setPw(e.target.value)} type="password"></input>
             <button>로그인</button>
         </form>
     )
-}*/
+}
 export default Index;
